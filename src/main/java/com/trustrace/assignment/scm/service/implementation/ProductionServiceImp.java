@@ -3,13 +3,16 @@ package com.trustrace.assignment.scm.service.implementation;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.trustrace.assignment.scm.model.CertificateAgency;
 import com.trustrace.assignment.scm.model.Production;
 import com.trustrace.assignment.scm.repository.ProductionRepository;
 import com.trustrace.assignment.scm.service.ProductionService;
@@ -18,6 +21,7 @@ import com.trustrace.assignment.scm.service.ProductionService;
 public class ProductionServiceImp implements ProductionService {
     @Autowired
 	ProductionRepository productionRepo;
+	
 	
 	private final String FOLDER_PATH = "C:/Users/Sudhakar/java/scm/src/main/resources/images/";
 	private String imageUrlGenerator(MultipartFile file) throws IOException
@@ -41,38 +45,71 @@ public class ProductionServiceImp implements ProductionService {
 		}
 		return null;
 	}
-	public Production getById(String id) {
+	// public Production getById(String id) {
+	// 	try {
+	// 		Production _id = productionRepo.findByProductionID(id);
+	// 		return productionRepo.findById(_id.get_id()).get();
+	// 	} catch (Exception e) {
+	// 		e.printStackTrace();
+	// 	}
+	// 	return null;
+	// }
+	@Override
+	public Production getById(String _id) {
+		//Production optionalProduction = new Production();
 		try {
-			Production _id = productionRepo.findByProductionID(id);
-			return _id;
+			Production production = productionRepo.findByProductionID(_id);
+			return production;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+	public boolean isImage(String filename) 
+	{
+		String[] imageFormat = {".jpg", ".jpeg", ".png"};
+		String uploadFileFormat = filename.toLowerCase();
+		for(int i=0;i<3;i++)
+		{
+			if(uploadFileFormat.endsWith(imageFormat[i]))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	public String saveProductionWithImage(Production a, MultipartFile file) throws IOException {
 		Production id = productionRepo.findByProductionID(a.getProductionID());
-		if(id==null)
-		{
-			Production production = new Production(
-				null, 
-				a.getProductionID(),
-				a.getProduct(),
-				a.getQuantityProduced(), 
-				a.getBuyerID(), 
-				a.getTimestamp(), 
-				a.getImage_url(),
-				null
-			);
-			production.setImage_url(imageUrlGenerator(file));
-			productionRepo.save(production);
-			return "Production saved successfully : "+a.get_id();
-        }
-		else
-		{
-			return "Production already exists";
+		try {
+			if(!isImage(file.getOriginalFilename()))
+			{
+				return "File unsupported";
+			}
+			else if(id==null)
+			{
+				Production production = new Production(
+					null, 
+					a.getProductionID(),
+					a.getProduct(),
+					a.getQuantityProduced(), 
+					a.getBuyerID(), 
+					a.getTimestamp(), 
+					a.getImage_url(),
+					null
+				);
+				production.setImage_url(imageUrlGenerator(file));
+				productionRepo.save(production);
+				return "Production saved successfully : "+production.get_id();
+			}
+			else
+			{
+				return "Production already exists";
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public String updateProduction(Production a) {

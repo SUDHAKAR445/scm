@@ -1,5 +1,6 @@
 package com.trustrace.assignment.scm.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.trustrace.assignment.scm.model.CertificateAgency;
 import com.trustrace.assignment.scm.model.Production;
 import com.trustrace.assignment.scm.service.ProductionService;
 
@@ -52,14 +54,16 @@ public class ProductionController {
 	} 
 	
 	@GetMapping("/select/productionbyid/{id}")
-	public ResponseEntity<Production> getById(@PathVariable("id") String id){
-		try{
-			return new ResponseEntity<>(productionService.getById(id),HttpStatus.OK);
-		}
-		catch(Exception e)
+	public ResponseEntity<Production> getById(@PathVariable("id") String id) throws IOException{
+			try 
 		{
-			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
-		}
+            
+            return ResponseEntity.ok(productionService.getById(id));
+        } catch (Exception e) 
+		{
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
 	}
 	
 	@PostMapping("/save")
@@ -67,8 +71,8 @@ public class ProductionController {
 	{
 		try 
 		{
-            productionService.saveProductionWithImage(a, file);
-            return ResponseEntity.ok("Agency saved successfully with image");
+            
+            return ResponseEntity.ok(productionService.saveProductionWithImage(a, file));
         } catch (Exception e) 
 		{
             e.printStackTrace();
