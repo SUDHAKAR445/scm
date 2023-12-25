@@ -65,7 +65,7 @@ public class AccountController
 	@PutMapping("/update")
 	public ResponseEntity<String> update(@RequestBody Account a) {
 		try{
-			return new ResponseEntity<String>(accountService.updateAccount(a),HttpStatus.OK);
+			return new ResponseEntity<String>(accountService.updateAccount(a),HttpStatus.CREATED);
 		}
 		catch(Exception e)
 		{
