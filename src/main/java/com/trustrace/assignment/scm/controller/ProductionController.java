@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.trustrace.assignment.scm.model.CertificateAgency;
 import com.trustrace.assignment.scm.model.Production;
 import com.trustrace.assignment.scm.service.ProductionService;
 
@@ -93,7 +92,7 @@ public class ProductionController {
 	}
 
 	@PutMapping("/updateimage/{id}")
-	public ResponseEntity updateImageById(@RequestParam String id, @RequestParam MultipartFile file) 
+	public ResponseEntity<?> updateImageById(@RequestParam String id, @RequestParam MultipartFile file) 
 	{
 		try 
 		{

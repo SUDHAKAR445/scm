@@ -44,11 +44,12 @@ public class AccountServiceImp implements AccountService{
 	}
 	
 	public String updateAccount(Account a) {
-		Account id = accountRepo.findByBrandid(a.getBrandid());
-		if(id!=null)
+		Account account = accountRepo.findByBrandid(a.getBrandid());
+		if(account!=null)
 		{
+			a.set_id(account.get_id());
 			accountRepo.save(a);
-			return "Account updated successfully : "+id.get_id();
+			return "Account updated successfully : "+account.get_id();
 	    }
 		else
 		{

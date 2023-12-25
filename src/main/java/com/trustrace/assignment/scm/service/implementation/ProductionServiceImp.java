@@ -23,7 +23,7 @@ public class ProductionServiceImp implements ProductionService {
 	ProductionRepository productionRepo;
 	
 	
-	private final String FOLDER_PATH = "C:/Users/Sudhakar/java/scm/src/main/resources/images/";
+	private final String FOLDER_PATH = "/home/divya/Documents/scm/src/main/resources/images/";
 	private String imageUrlGenerator(MultipartFile file) throws IOException
 	{
 		String url = FOLDER_PATH + file.getOriginalFilename();

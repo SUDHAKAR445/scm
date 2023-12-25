@@ -34,8 +34,5 @@ public class CertificateAgency {
 	@Field("phone")
 	private String phone;
 
-    public Object map(Object object) {
-        return null;
-    }
-
+    
 }

@@ -195,7 +195,7 @@ public class CertificateAgencyControllerTest
 
         response.andExpect(status().isOk())
                 .andDo(print());
-    }
+       }
 
     @Test
     public void deleteAgencyByInvalidId() throws Exception{

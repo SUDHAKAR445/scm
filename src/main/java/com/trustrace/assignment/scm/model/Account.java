@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,15 +17,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection="account")
+@Builder
 public class Account{
 	
-	public static final String HttpStatus = null;
+	//public static final String HttpStatus = null;
 
 	@Id
 	private String _id;
 	
 	@Field("brandid")
-	private String brandid;
+	@Indexed(unique = true)
+	private String 	brandid;
 
 	@Field("name")
 	private String name;
